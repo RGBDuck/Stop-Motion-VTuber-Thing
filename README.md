@@ -2,6 +2,7 @@
 Allows for facetracking and such using pre-rendered videos and VBridger (Hoping to add VTS support perchance). Operates using OpenCV
 
 HOW TO USE:
+
 Config:
 - IP set to local device IP or device where VBridger is running
 - Port set to VBridger VMC port (on the bottom-right of VBridger, switch from VTS to VMC)
