@@ -1,0 +1,6 @@
+{
+    "host": "127.0.0.1",
+    "osc_port": 39539,
+    "video_folder": "Faces",
+    "file_ext": "mp4"
+}

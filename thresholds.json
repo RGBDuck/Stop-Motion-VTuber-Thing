@@ -1,0 +1,12 @@
+{
+    "farright": 15,
+    "right": 5,
+    "left": -5,
+    "farleft": -15,
+    
+    "up": 8,
+    "down": -8,
+
+    "mouthopen": 0.2,
+    "eyeblink": 0.3
+}
