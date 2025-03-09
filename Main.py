@@ -19,7 +19,7 @@ OSC_PORT = config["osc_port"]
 FILE = config["video_folder"]
 EXT = config["file_ext"]
 
-faceStr = "2100"  # Default face (change dynamically in your OSC server)
+faceStr = "2100"  # Default face 
 
 ### OpenCV ###
 cap = None  # Global video capture object
@@ -70,7 +70,6 @@ def video_player():
 values = {}
 
 def val_handler(address, *args):
-    #print(f"VALUE {address}: {args}")
     values[args[0]] = args[1]
 
 def apply_handler(address, *args):
@@ -82,6 +81,7 @@ def default_handler(address, *args):
     return
 
 def calc_pose(params):
+    #Parameter thresholds from thresholds file
     faceAngleY = params["FaceAngleY"]
     faceAngleX = params["FaceAngleX"]
     mouthOpen = params["MouthOpen"]
@@ -93,6 +93,7 @@ def calc_pose(params):
     mouth = "0"
     eyes = "0"
 
+    #Calculate up/down
     if faceAngleY > thresholds["up"]:
         updown = "2"
     elif faceAngleY < thresholds["down"]:
@@ -100,6 +101,7 @@ def calc_pose(params):
     else:
         updown = "1"
 
+    #Calculate left/right
     if faceAngleX > thresholds["farright"]:
         leftright = "4"
     elif faceAngleX > thresholds["right"]:
@@ -111,17 +113,19 @@ def calc_pose(params):
     else:
         leftright = "2"
 
+    #Calculate mouth open/closed
     if mouthOpen > thresholds["mouthopen"]:
         mouth = "1"
     else:
         mouth = "0"
 
+    #Calculate eyes open/closed (synchronized blinking only)
     if eyeOpenLeft > thresholds["eyeblink"] or eyeOpenRight > thresholds["eyeblink"]:
         eyes = "0"
     else:
         eyes = "1"
 
-    return (leftright + updown + mouth + eyes)
+    return (leftright + updown + mouth + eyes) #Adds the parameter strings together to get the pose string 
 
 async def osc_server_task():
     loop = asyncio.get_running_loop()
@@ -141,7 +145,7 @@ async def osc_server_task():
 ### Main Async Function ###
 async def main():
     _= asyncio.create_task(osc_server_task())
-    thread = asyncio.to_thread(video_player)  # Run OpenCV loop
+    thread = asyncio.to_thread(video_player)  # Run OpenCV loop on a separate thread
     await thread
 
 if __name__ == "__main__":
